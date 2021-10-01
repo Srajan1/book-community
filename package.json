@@ -1,0 +1,24 @@
+{
+  "name": "bookcommunity",
+  "version": "1.0.0",
+  "description": "A community web app for avid readers",
+  "main": "server.js",
+  "scripts": {
+    "start": "npm backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Srajan Kishor Gupta BT18CS010",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^6.2.2"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mysql2": "^2.3.0",
+    "sequelize": "^6.6.5",
+    "sequelize-cli": "^6.2.0"
+  }
+}
