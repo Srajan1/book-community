@@ -1,0 +1,6 @@
+{
+    "USER_CREATED": "New user has been created, check your email for verification link",
+    "USER_SIGNED_IN": "Successfully signed in",
+    "INVALID": "Invalid credentials sent",
+    "INTERNAL_ERROR": "Some error occured"
+}
