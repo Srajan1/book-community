@@ -9,3 +9,7 @@ exports.otpVerification = Joi.object().keys({
   email: Joi.string().email().required(),
   otp: Joi.string().required(),
 });
+exports.signIn = Joi.object().keys({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+});
