@@ -47,7 +47,7 @@ exports.otpVerification = async function (req, res) {
           const updation = { isVerified: 1, otp: "" };
           await db.User.update(updation, { where: { email: data.email } });
           res.status(200).send(
-            apiResponse(1, message.USER_CREATED, {
+            apiResponse(1, message.VERIFIED, {
               User: "user is now verified",
             })
           );

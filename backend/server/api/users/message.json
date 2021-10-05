@@ -3,6 +3,7 @@
     "USER_SIGNED_IN": "Successfully signed in",
     "INVALID": "Invalid credentials sent",
     "INTERNAL_ERROR": "Some error occured",
+    "VERIFIED": "User is now verified successfully",
     "ALREADY_VERIFIED": "User is already verified.",
     "INVALID_OTP": "OTP is invalid",
     "UNVERIFIED_USER": "User is not verified"
