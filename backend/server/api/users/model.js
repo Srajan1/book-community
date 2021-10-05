@@ -17,6 +17,14 @@ module.exports = (sequelize, DataTypes) => {
     name: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    otp: {
+      type: DataTypes.STRING,
+      defaultValue: "1"
+    },
+    isVerified: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     }
   },{timestamps: false}
   );
