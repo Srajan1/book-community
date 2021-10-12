@@ -1,0 +1,5 @@
+{
+    "ROOM_CREATED": "New room has been created, you are now the admin for this room. You can make someone else admin if you want",
+    "INTERNAL_ERROR": "Some error occured",
+    "BOOK_NOT_FOUND": "No such book found"
+}
