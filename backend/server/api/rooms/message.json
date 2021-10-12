@@ -1,5 +1,7 @@
 {
     "ROOM_CREATED": "New room has been created, you are now the admin for this room. You can make someone else admin if you want",
     "INTERNAL_ERROR": "Some error occured",
-    "BOOK_NOT_FOUND": "No such book found"
+    "BOOK_NOT_FOUND": "No such book found",
+    "ROOM_EXISTS": "Room found for this book",
+    "API_NOT_FOUND": "Please verify the isbn number no book with this ISBN was found"
 }
