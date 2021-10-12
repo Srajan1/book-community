@@ -83,12 +83,12 @@ exports.index = async function (req, res) {
       const room = await db.Room.findAll({
         include: [{ model: db.Book, where: where }],
       });
-      if (room) {
+      if (room && room.length && room.length) {
         res
           .status(404)
           .send(apiResponse(0, message.ROOM_EXISTS, { Room: room }));
       } else {
-        res.status(404).send(apiResponse(0, message.BOOK_NOT_FOUND, {}));
+        res.status(404).send(apiResponse(0, message.ISBN_NOT_FOUND, {}));
       }
     } catch (err) {
       res
@@ -102,12 +102,12 @@ exports.index = async function (req, res) {
       const room = await db.Room.findAll({
         include: [{ model: db.Book, where: where }],
       });
-      if (room) {
+      if (room && room.length) {
         res
           .status(404)
           .send(apiResponse(0, message.ROOM_EXISTS, { Room: room }));
       } else {
-        res.status(404).send(apiResponse(0, message.BOOK_NOT_FOUND, {}));
+        res.status(404).send(apiResponse(0, message.TITLE_NOT_FOUND, {}));
       }
     } catch (err) {
       res
@@ -118,7 +118,7 @@ exports.index = async function (req, res) {
     const room = await db.Room.findAll({
       include: [{ model: db.Book }],
     });
-    if (room) {
+    if (room && room.length) {
       res.status(404).send(apiResponse(0, message.ROOM_EXISTS, { Room: room }));
     } else {
       res.status(404).send(apiResponse(0, message.BOOK_NOT_FOUND, {}));

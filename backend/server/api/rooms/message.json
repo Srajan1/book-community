@@ -3,5 +3,7 @@
     "INTERNAL_ERROR": "Some error occured",
     "BOOK_NOT_FOUND": "No such book found",
     "ROOM_EXISTS": "Room found for this book",
-    "API_NOT_FOUND": "Please verify the isbn number no book with this ISBN was found"
+    "API_NOT_FOUND": "Please verify the isbn number no book with this ISBN was found",
+    "ISBN_NOT_FOUND": "No room with a book with this ISBN found, please consider creating a room",
+    "TITLE_NOT_FOUND": "No room with a book with this title found, please consider searching with an ISBN number so that search can be narrowed down"
 }
