@@ -35,25 +35,32 @@ exports.create = async function (req, res) {
               const { description } = book.volumeInfo;
               const { thumbnail } = book.volumeInfo.imageLinks;
 
-              const newBook = await db.Book.findOrCreate(
-                {
-                  where: { isbn },
+              const newBook = await db.Book.findOrCreate({
+                where: { isbn },
 
-                  defaults: {
-                    title,
-                    isbn,
-                    subtitle,
-                    description,
-                    thumbnail,
-                  },
-                  transaction: transactionInstance 
+                defaults: {
+                  title,
+                  isbn,
+                  subtitle,
+                  description,
+                  thumbnail,
                 },
-              );
-              
+                transaction: transactionInstance,
+              });
+
               const bookId = newBook[0].dataValues.id;
               const userId = user.id;
               const Room = await db.Room.create(
                 { bookId, adminId: userId },
+                { transaction: transactionInstance }
+              );
+              console.log(Room.dataValues.id);
+              await db.Member.create(
+                {
+                  roomId: Room.dataValues.id,
+                  userId: Room.dataValues.adminId,
+                  isAdmin: 1,
+                },
                 { transaction: transactionInstance }
               );
               transactionInstance.commit();
@@ -91,8 +98,8 @@ exports.index = async function (req, res) {
       });
       if (room && room.length && room.length) {
         res
-          .status(404)
-          .send(apiResponse(0, message.ROOM_EXISTS, { Room: room }));
+          .status(200)
+          .send(apiResponse(1, message.ROOM_EXISTS, { Room: room }));
       } else {
         res.status(404).send(apiResponse(0, message.ISBN_NOT_FOUND, {}));
       }
@@ -110,8 +117,8 @@ exports.index = async function (req, res) {
       });
       if (room && room.length) {
         res
-          .status(404)
-          .send(apiResponse(0, message.ROOM_EXISTS, { Room: room }));
+          .status(200)
+          .send(apiResponse(1, message.ROOM_EXISTS, { Room: room }));
       } else {
         res.status(404).send(apiResponse(0, message.TITLE_NOT_FOUND, {}));
       }
@@ -125,9 +132,31 @@ exports.index = async function (req, res) {
       include: [{ model: db.Book }],
     });
     if (room && room.length) {
-      res.status(404).send(apiResponse(0, message.ROOM_EXISTS, { Room: room }));
+      res.status(200).send(apiResponse(1, message.ROOM_EXISTS, { Room: room }));
     } else {
       res.status(404).send(apiResponse(0, message.BOOK_NOT_FOUND, {}));
     }
+  }
+};
+
+exports.view = async function (req, res) {
+  const { roomId } = req.params;
+  try {
+    const room = await db.Room.findOne({
+      where: { id: roomId },
+      include: [{ model: db.Book }, { model: db.User, attributes: ["name"] }],
+    });
+    if(!room)
+    res
+    .status(404)
+    .send(apiResponse(0, 'Room not found', { Room: room }));
+    else 
+    res
+    .status(200)
+    .send(apiResponse(1, 'Room found', { Room: room }));
+  } catch (err) {
+    res
+    .status(500)
+    .send(apiResponse(0, message.INTERNAL_ERROR, { error: err.message }));
   }
 };
