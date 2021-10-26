@@ -35,17 +35,22 @@ exports.create = async function (req, res) {
               const { description } = book.volumeInfo;
               const { thumbnail } = book.volumeInfo.imageLinks;
 
-              const newBook = await db.Book.create(
+              const newBook = await db.Book.findOrCreate(
                 {
-                  title,
-                  isbn,
-                  subtitle,
-                  description,
-                  thumbnail,
+                  where: { isbn },
+
+                  defaults: {
+                    title,
+                    isbn,
+                    subtitle,
+                    description,
+                    thumbnail,
+                  },
+                  transaction: transactionInstance 
                 },
-                { transaction: transactionInstance }
               );
-              const bookId = newBook.dataValues.id;
+              
+              const bookId = newBook[0].dataValues.id;
               const userId = user.id;
               const Room = await db.Room.create(
                 { bookId, adminId: userId },
@@ -56,6 +61,7 @@ exports.create = async function (req, res) {
                 .status(200)
                 .send(apiResponse(1, message.ROOM_CREATED, { Room }));
             } catch (err) {
+              console.log(err);
               transactionInstance.rollback();
               res.status(500).send(
                 apiResponse(0, message.INTERNAL_ERROR, {

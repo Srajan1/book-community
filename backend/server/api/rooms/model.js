@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       bookId: {
         type: DataTypes.INTEGER,
-        unique: true,
       },
       adminId: {
         type: DataTypes.INTEGER
