@@ -2,25 +2,23 @@ const db = require("../../../models/index");
 const { sequelize } = require("../../../models/index");
 const { apiResponse } = require("../../helper/apiResponse");
 const message = require("./message");
-const http = require("https");
 const Sequelize = require("Sequelize");
 const Op = Sequelize.Op;
 const userInfo = require("../../helper/userInfo");
 
-exports.join = async function (req, res) {
-  const { roomId } = req.body;
+exports.create = async function (req, res) {
   try {
     const transactionInstance = await sequelize.transaction();
     const user = await userInfo(req, res, transactionInstance);
-    const member = await db.Member.findOrCreate({
-      where: { roomId, userId: user.id },
-      defaults: { roomId, userId: user.id },
+    const data = req.body;
+    data.userId = user.id;
+    const Review = await db.Review.create(data, {
       transaction: transactionInstance,
     });
     transactionInstance.commit();
     res.status(200).send(
-      apiResponse(1, message.JOINED_ROOM, {
-        Member: member,
+      apiResponse(1, message.REVIEW_ADDED, {
+        Review,
       })
     );
   } catch (err) {

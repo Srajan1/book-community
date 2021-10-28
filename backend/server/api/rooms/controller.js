@@ -83,7 +83,7 @@ exports.create = async function (req, res) {
     .on("error", (err) => {
       res
         .status(500)
-        .send(apiResponse(0, message.INTERNAL_ERROR, { error: err.message }));
+        .send(apiResponse(0, message.INTERNAL_ERROR, { error: err }));
     });
 };
 
@@ -106,7 +106,7 @@ exports.index = async function (req, res) {
     } catch (err) {
       res
         .status(500)
-        .send(apiResponse(0, message.INTERNAL_ERROR, { error: err.message }));
+        .send(apiResponse(0, message.INTERNAL_ERROR, { error: err }));
     }
   } else if (title) {
     try {
@@ -125,7 +125,7 @@ exports.index = async function (req, res) {
     } catch (err) {
       res
         .status(500)
-        .send(apiResponse(0, message.INTERNAL_ERROR, { error: err.message }));
+        .send(apiResponse(0, message.INTERNAL_ERROR, { error: err }));
     }
   } else {
     const room = await db.Room.findAll({
@@ -157,6 +157,6 @@ exports.view = async function (req, res) {
   } catch (err) {
     res
     .status(500)
-    .send(apiResponse(0, message.INTERNAL_ERROR, { error: err.message }));
+    .send(apiResponse(0, message.INTERNAL_ERROR, { error: err }));
   }
 };

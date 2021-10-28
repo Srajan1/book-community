@@ -24,7 +24,7 @@ exports.signUp = async function (req, res) {
     res
       .status(500)
       .send(
-        apiResponse(0, message.INTERNAL_ERROR, { error: err.errors[0].message })
+        apiResponse(0, message.INTERNAL_ERROR, { error: err })
       );
   }
 };
