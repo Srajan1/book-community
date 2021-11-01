@@ -26,7 +26,7 @@ exports.authorization = async (req, res, next) => {
 				);
 		} else {
 			const user = await db.User.findOne({ where: { email: decoded.email } });
-			if (user) {
+			if (user && user.dataValues.isVerified === 1) {
 				next();
 			} else {
 				res

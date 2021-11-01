@@ -1,6 +1,10 @@
 {
     "REVIEW_ADDED": "Your review has been added",
+    "REVIEW_FETCHED": "Reviews have been fetched",
     "INTERNAL_ERROR": "Some error occured",
+    "REVIEW_NOT_FOUND": "Review not found",
     "REVIEW_UPDATED": "Your review was updated",
-    "REVIEW_DELETED": "The review was deleted"
+    "REVIEW_DELETED": "The review was deleted",
+    "INVALID_UPDATION": "You cannot edit someone else's review",
+    "INVALID_DELETION": "You cannot delete someone else's review"
 }

@@ -1,14 +1,8 @@
-Reviews module:
-    create
-    read
-    update: can only be done by author
-    delete: can be done only by author and admin
-
 Posts module:
     create
     read
     update: can only be done by author
-    delete: can be done only by author and admin
+    delete: can be done only by admin
     comments
     upvotes
     downvotes
