@@ -115,6 +115,6 @@ exports.signIn = async function (req, res) {
     
     res
       .status(500)
-      .send(apiResponse(0, message.INTERNAL_ERROR, { error: err.message }));
+      .send(apiResponse(0, message.INTERNAL_ERROR, { error: err }));
   }
 };
