@@ -1,0 +1,7 @@
+{
+    "DISCUSSION_ADDED": "New discussion added",
+    "DISCUSSION_DELETED": "Discussion deleted",
+    "DISCUSSION_UPDATED": "Discussion was updated",
+    "INTERNAL_ERROR": "Something went wrong",
+    "DISCUSSION_FETCHED": "Discussions were retrieved"
+}
