@@ -48,7 +48,30 @@ exports.leave = async function(req, res){
       res.status(200).send(apiResponse(1, message.LEFT_ROOM, {Member: `You left the room ${roomId}`}));
     }
   }catch(err){
-    console.log(err);
+    transactionInstance.rollback();
+    res.status(500).send(
+      apiResponse(0, message.INTERNAL_ERROR, {
+        error: err,
+      })
+    );
+  }
+}
+
+exports.kick = async function(req, res) {
+  const {roomId, memberId} = req.body;
+  try{
+    const transactionInstance = await sequelize.transaction();
+    const user = await userInfo(req, res, transactionInstance);
+    let member = await db.Member.findOne({where: {roomId, userId: user.id}, transaction: transactionInstance});
+    member = member.dataValues;
+    if(member.isAdmin !== 1){
+      res.status(409).send(apiResponse(0, 'Invalid action', {Member: `You are the not admin of this room. You cannot kick others out of the room`}));
+    }else{
+      await db.Member.destroy({where: {roomId, userId: memberId}, transaction: transactionInstance});
+      transactionInstance.commit();
+      res.status(200).send(apiResponse(1, message.USER_REMOVED, {Member: `User removed from the room ${roomId}`}));
+    }
+  }catch(err){
     transactionInstance.rollback();
     res.status(500).send(
       apiResponse(0, message.INTERNAL_ERROR, {
