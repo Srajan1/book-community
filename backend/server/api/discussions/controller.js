@@ -40,7 +40,7 @@ exports.index = async function(req, res){
         where.title = { [Op.like]: "%" + title + "%" };
         if(body)
         where.body = { [Op.like]: "%" + body + "%" };
-        const Discussion = await db.Discussion.findAll({where, include: [{model: db.User, attributes: ['name']}]});
+        const Discussion = await db.Discussion.findAll({where, include: [{model: db.User, attributes: ['name']}] });
         res
         .status(200)
         .send(apiResponse(1, message.DISCUSSION_FETCHED, { Discussion }));
@@ -51,4 +51,23 @@ exports.index = async function(req, res){
             })
           );
     }
+}
+
+exports.view = async function(req, res){
+
+  const {discussionId} = req.params;
+  try{
+    const Discussion = await db.Discussion.findOne({where: {id: discussionId}, include: [{model: db.User, attributes: ['name']}, {model: db.Comment}]});
+    
+    res
+        .status(200)
+        .send(apiResponse(1, message.DISCUSSION_FETCHED, { Discussion }));
+  }catch(err){
+    console.log(err);
+    res.status(500).send(
+      apiResponse(0, message.INTERNAL_ERROR, {
+        error: err,
+      })
+    );
+  }
 }
