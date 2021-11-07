@@ -34,7 +34,7 @@ exports.create = async function (req, res) {
 exports.view = async function (req, res) {
   const roomId = req.params.roomId;
   try {
-    const Review = await db.Review.findAll({ where: { roomId } });
+    const Review = await db.Review.findAll({ where: { roomId }, include: [{model: db.User, attributes: ['name']}] });
     res.status(200).send(
       apiResponse(1, message.REVIEW_FETCHED, {
         Review,

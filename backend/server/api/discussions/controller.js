@@ -40,7 +40,7 @@ exports.index = async function(req, res){
         where.title = { [Op.like]: "%" + title + "%" };
         if(body)
         where.body = { [Op.like]: "%" + body + "%" };
-        const Discussion = await db.Discussion.findAll({where});
+        const Discussion = await db.Discussion.findAll({where, include: [{model: db.User, attributes: ['name']}]});
         res
         .status(200)
         .send(apiResponse(1, message.DISCUSSION_FETCHED, { Discussion }));
