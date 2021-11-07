@@ -9,8 +9,8 @@ const userInfo = require("../../helper/userInfo");
 
 exports.create = async function (req, res) {
   const data = req.body;
+  const transactionInstance = await sequelize.transaction();
   try {
-    const transactionInstance = await sequelize.transaction();
     const user = await userInfo(req, res, transactionInstance);
     data.userId = user.id;
     const Discussion = await db.Discussion.create(data, {

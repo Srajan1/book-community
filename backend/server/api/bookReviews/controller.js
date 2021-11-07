@@ -7,8 +7,8 @@ const Op = Sequelize.Op;
 const userInfo = require("../../helper/userInfo");
 
 exports.create = async function (req, res) {
+  const transactionInstance = await sequelize.transaction();
   try {
-    const transactionInstance = await sequelize.transaction();
     const user = await userInfo(req, res, transactionInstance);
     const data = req.body;
     data.userId = user.id;
@@ -51,8 +51,8 @@ exports.view = async function (req, res) {
 
 exports.update = async function (req, res) {
   const reviewId = req.params.reviewId;
+  const transactionInstance = await sequelize.transaction();
   try {
-    const transactionInstance = await sequelize.transaction();
     const user = await userInfo(req, res, transactionInstance);
     const data = req.body;
     let Review = await db.Review.findOne({
@@ -94,8 +94,8 @@ exports.update = async function (req, res) {
 
 exports.delete = async function (req, res) {
   const reviewId = req.params.reviewId;
+  const transactionInstance = await sequelize.transaction();
   try {
-    const transactionInstance = await sequelize.transaction();
     const user = await userInfo(req, res, transactionInstance);
     let Review = await db.Review.findOne({
       where: { id: reviewId },

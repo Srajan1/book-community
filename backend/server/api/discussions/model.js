@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
     Discussion.belongsTo(models.Room, {
       foreignKey: "roomId",
     });
+    Discussion.hasMany(models.Comment, {
+      foreignKey: 'discussionId'
+    });
   };
   return Discussion;
 };

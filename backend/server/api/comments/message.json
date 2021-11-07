@@ -1,0 +1,6 @@
+{
+    "COMMENT_ADDED": "Comment has been added",
+    "COMMENT_DELETED": "Comment has been deleted",
+    "INTERNAL_ERROR": "Something went wrong",
+    "FETCHED": "Comments fetched"
+}

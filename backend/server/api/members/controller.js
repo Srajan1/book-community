@@ -9,8 +9,8 @@ const userInfo = require("../../helper/userInfo");
 
 exports.join = async function (req, res) {
   const { roomId } = req.body;
+  const transactionInstance = await sequelize.transaction();
   try {
-    const transactionInstance = await sequelize.transaction();
     const user = await userInfo(req, res, transactionInstance);
     const member = await db.Member.findOrCreate({
       where: { roomId, userId: user.id },
@@ -35,8 +35,8 @@ exports.join = async function (req, res) {
 
 exports.leave = async function(req, res){
   const { roomId } = req.params;
+  const transactionInstance = await sequelize.transaction();
   try{
-    const transactionInstance = await sequelize.transaction();
     const user = await userInfo(req, res, transactionInstance);
     let member = await db.Member.findOne({where: {roomId, userId: user.id}, transaction: transactionInstance});
     member = member.dataValues;
@@ -59,8 +59,8 @@ exports.leave = async function(req, res){
 
 exports.kick = async function(req, res) {
   const {roomId, memberId} = req.body;
+  const transactionInstance = await sequelize.transaction();
   try{
-    const transactionInstance = await sequelize.transaction();
     const user = await userInfo(req, res, transactionInstance);
     let member = await db.Member.findOne({where: {roomId, userId: user.id}, transaction: transactionInstance});
     member = member.dataValues;
