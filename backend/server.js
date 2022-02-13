@@ -1,5 +1,11 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+app.use(
+    cors({
+        origin: '*'
+    })
+)
 const db = require('./models')
 const router = express.Router();
 

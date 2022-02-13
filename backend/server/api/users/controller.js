@@ -19,7 +19,7 @@ exports.signUp = async function (req, res) {
     data.password = await bcryptjs.hash(data.password, salt);
     const user = await db.User.create(data);
     sendEmail(data.email, "OTP for book community", `${otp} is you otp`);
-    res.status(200).send(apiResponse(1, message.USER_CREATED, { User: user }));
+    res.status(200).send(apiResponse(1, message.USER_CREATED, {}));
   } catch (err) {
     res
       .status(500)

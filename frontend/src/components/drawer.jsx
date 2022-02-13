@@ -8,9 +8,8 @@ import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
 import { useLocation } from "react-router-dom";
-import Divider from '@mui/material/Divider';
-import SubjectIcon from "@mui/icons-material/Subject";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import HomeIcon from '@mui/icons-material/Home';
+import LoginIcon from '@mui/icons-material/Login';
 import IconButton from '@mui/material/IconButton';
 import { makeStyles } from "@mui/styles";
 import MenuIcon from '@mui/icons-material/Menu';
@@ -19,8 +18,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { useHistory } from "react-router-dom";
 
 const drawerWidth = 240;
@@ -93,7 +90,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const useStyles = makeStyles({
   active: {
-    background: "#ccc",
+    background: "#90caf9",
   },
 });
 
@@ -106,8 +103,13 @@ export default function Layout({children}) {
   const menuItems = [
     {
       text: "Home",
-      icon: <SubjectIcon color="secondary" />,
+      icon: <HomeIcon color="secondary" />,
       path: "/",
+    },
+    {
+      text: "Login/Register",
+      icon: <LoginIcon color="secondary" />,
+      path: "/login",
     }
   ];
   const handleDrawerOpen = () => {
@@ -146,10 +148,10 @@ export default function Layout({children}) {
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </DrawerHeader>
-        <Divider />
+        {/* <Divider /> */}
         <List>
           {menuItems.map((item, index) => (
-            <div className={location.pathname === item.path ? classes.active: null}>
+            
               <ListItem
                 button
                 key={item.text}
@@ -158,7 +160,7 @@ export default function Layout({children}) {
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />
               </ListItem>
-            </div>
+           
           ))}
         </List>
       </Drawer>
