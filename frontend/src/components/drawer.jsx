@@ -6,6 +6,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
+import HubIcon from '@mui/icons-material/Hub';
 import Typography from '@mui/material/Typography';
 import { useLocation } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
@@ -19,6 +20,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useHistory } from "react-router-dom";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
@@ -100,18 +102,34 @@ export default function Layout({children}) {
   const theme = useTheme();
   const location = useLocation();
   const [open, setOpen] = React.useState(false);
-  const menuItems = [
-    {
-      text: "Home",
-      icon: <HomeIcon color="secondary" />,
-      path: "/",
-    },
-    {
-      text: "Login/Register",
-      icon: <LoginIcon color="secondary" />,
-      path: "/login",
-    }
-  ];
+  var menuItems;
+  if(window.sessionStorage.getItem('token')){
+    menuItems = [
+      {
+        text: "Home",
+        icon: <HomeIcon color="secondary" />,
+        path: "/",
+      },
+      {
+        text: "Rooms",
+        icon: <HubIcon color="secondary" />,
+        path: "/rooms",
+      },
+      {
+        text: "Logout",
+        icon: <LogoutIcon color="secondary"/>,
+        path: '/login'
+      }
+    ];
+  }else{
+    menuItems = [
+      {
+        text: "Login/Register",
+        icon: <LoginIcon color="secondary" />,
+        path: "/login",
+      }
+    ];
+  }
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -155,7 +173,13 @@ export default function Layout({children}) {
               <ListItem
                 button
                 key={item.text}
-                onClick={() => history.push(item.path)}
+                onClick={() => {
+                  if(item.text === 'Logout'){
+                    window.sessionStorage.removeItem('token');
+                    alert('You have been logged out');
+                  }
+                  history.push(item.path);
+                }}
               >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />

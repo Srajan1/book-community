@@ -1,3 +1,4 @@
+const userInfo = require("../../helper/userInfo");
 const db = require("../../../models/index");
 const { sequelize } = require("../../../models/index");
 const { apiResponse } = require("../../helper/apiResponse");
@@ -5,7 +6,7 @@ const message = require("./message");
 const http = require("https");
 const Sequelize = require("Sequelize");
 const Op = Sequelize.Op;
-const userInfo = require("../../helper/userInfo");
+
 
 exports.join = async function (req, res) {
   const { roomId } = req.body;
@@ -73,6 +74,29 @@ exports.kick = async function(req, res) {
     }
   }catch(err){
     transactionInstance.rollback();
+    res.status(500).send(
+      apiResponse(0, message.INTERNAL_ERROR, {
+        error: err,
+      })
+    );
+  }
+}
+
+exports.myRooms = async function(req, res) {
+  // const transactionInstance = await sequelize.transaction();
+  try{
+    const user = await userInfo(req, res);
+    
+    const result = await db.Member.findAll({where: {userId: user.id}, include: [{model: db.Room, include: [db.Book]}]});
+    const Rooms = [];
+    result.forEach(element => {
+      const book = element.dataValues.Room.dataValues.Book.dataValues;
+      const isAdmin = element.dataValues.Room.adminId === user.id;
+      Rooms.push({Book: book})
+    });
+    res.status(200).send(apiResponse(1, message.ROOMS_FOUND, {MyRooms: Rooms}));
+  }catch(err){
+    console.log(err);
     res.status(500).send(
       apiResponse(0, message.INTERNAL_ERROR, {
         error: err,

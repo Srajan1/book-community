@@ -5,6 +5,7 @@ import Home from "./pages/home.jsx";
 import Login from "./pages/login.jsx";
 import Register from "./pages/register.jsx";
 import Layout from "./components/drawer.jsx";
+import Rooms from "./pages/rooms.jsx";
 import { red } from '@mui/material/colors';
 
 const color = red;
@@ -38,6 +39,9 @@ function App() {
           <Layout>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route exact path="/rooms">
+            <Rooms />
           </Route>
           <Route path="/login">
             <Login />

@@ -25,7 +25,7 @@ export default function Login() {
         .then(data => {
           if(data.ResponseCode === 1){
             window.sessionStorage.setItem("token", data.Result.token);
-            alert('You are logged in');
+            alert('Successfully logged in');
             history.push("/");
           }
           else{
@@ -36,6 +36,10 @@ export default function Login() {
           }
         });
   }
+  var error = '';
+  if(window.sessionStorage.getItem('token')){
+    error = 'You are already logged in with one account. You can log in to a different account from here.'                 
+  }
   return(
       <Grid container spacing={3}>
         <Grid item md={3} sm={false}></Grid>
@@ -44,7 +48,9 @@ export default function Login() {
               <Grid align='center'>
                    <Avatar style={avatarStyle}><LockIcon/></Avatar>
                   <h2>Sign In</h2>
-                  <Typography variant="error" id="error"> </Typography>
+                  <Typography variant="error" id="error"> 
+                    {error}
+                  </Typography>
               </Grid>
               <TextField label='Email' value={email} onChange={(e) => {setEmail(e.target.value)}} placeholder='Enter Email' fullWidth required/>
               
