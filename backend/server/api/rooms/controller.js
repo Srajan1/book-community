@@ -1,11 +1,12 @@
 const db = require("../../../models/index");
+const userInfo = require("../../helper/userInfo");
 const { sequelize } = require("../../../models/index");
 const { apiResponse } = require("../../helper/apiResponse");
 const message = require("./message");
 const http = require("https");
 const Sequelize = require("Sequelize");
 const Op = Sequelize.Op;
-const userInfo = require("../../helper/userInfo");
+
 
 exports.create = async function (req, res) {
   const { isbn } = req.body;
@@ -94,9 +95,12 @@ exports.index = async function (req, res) {
       const where = {};
       where.isbn = isbn;
       const room = await db.Room.findAll({
-        include: [{ model: db.Book, where: where }],
+        include: [
+          { model: db.Book, where: where },
+          { model: db.User, attributes: ["name"] },
+        ],
       });
-      if (room && room.length) {  
+      if (room && room.length) {
         res
           .status(200)
           .send(apiResponse(1, message.ROOM_EXISTS, { Room: room }));
@@ -113,9 +117,12 @@ exports.index = async function (req, res) {
       const where = {};
       where.title = { [Op.like]: "%" + title + "%" };
       const room = await db.Room.findAll({
-        include: [{ model: db.Book, where: where }],
+        include: [
+          { model: db.Book, where: where },
+          { model: db.User, attributes: ["name"] },
+        ],
       });
-      if (room && room.length) {  
+      if (room && room.length) {
         res
           .status(200)
           .send(apiResponse(1, message.ROOM_EXISTS, { Room: room }));
@@ -123,13 +130,13 @@ exports.index = async function (req, res) {
         res.status(404).send(apiResponse(0, message.TITLE_NOT_FOUND, {}));
       }
     } catch (err) {
-      res 
+      res
         .status(500)
         .send(apiResponse(0, message.INTERNAL_ERROR, { error: err }));
     }
   } else {
     const room = await db.Room.findAll({
-      include: [{ model: db.Book }],
+      include: [{ model: db.Book }, { model: db.User, attributes: ["name"] }],
     });
     if (room && room.length) {
       res.status(200).send(apiResponse(1, message.ROOM_EXISTS, { Room: room }));
@@ -146,17 +153,28 @@ exports.view = async function (req, res) {
       where: { id: roomId },
       include: [{ model: db.Book }, { model: db.User, attributes: ["name"] }],
     });
-    if(!room)
-    res
-    .status(404)
-    .send(apiResponse(0, 'Room not found', { Room: room }));
-    else 
-    res
-    .status(200)
-    .send(apiResponse(1, 'Room found', { Room: room }));
+    if (!room)
+      res.status(404).send(apiResponse(0, "Room not found", { Room: room }));
+    else {
+      res.status(200).send(apiResponse(1, "Room found", { Room: room }));
+    }
   } catch (err) {
     res
-    .status(500)
-    .send(apiResponse(0, message.INTERNAL_ERROR, { error: err }));
+      .status(500)
+      .send(apiResponse(0, message.INTERNAL_ERROR, { error: err }));
+  }
+};
+
+exports.memberCount = async function (req, res) {
+  const { roomId } = req.params;
+  try {
+    const user = await userInfo(req, res);
+    const isMember = await db.Member.count({where: {roomId, userId: user.id}});
+    const memberCount = await db.Member.count({where: {roomId: roomId}});
+    res.status(200).send(apiResponse(1, "Member data found", { isMember, memberCount }));
+  } catch (err) {
+    res
+      .status(500)
+      .send(apiResponse(0, message.INTERNAL_ERROR, { error: err }));
   }
 };

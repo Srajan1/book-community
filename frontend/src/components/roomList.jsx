@@ -3,7 +3,6 @@ import { Typography, TextField, Button, Grid } from "@mui/material";
 import RoomCard from "./roomCard";
 
 export default function RoomList({ rooms, message }) {
-  console.log(rooms);
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
