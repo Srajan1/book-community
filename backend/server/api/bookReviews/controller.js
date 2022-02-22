@@ -31,10 +31,27 @@ exports.create = async function (req, res) {
   }
 };
 
-exports.view = async function (req, res) {
+exports.viewSpoiled = async function (req, res) {
   const roomId = req.params.roomId;
   try {
     const Review = await db.Review.findAll({ where: { roomId }, include: [{model: db.User, attributes: ['name']}] });
+    res.status(200).send(
+      apiResponse(1, message.REVIEW_FETCHED, {
+        Review,
+      })
+    );
+  } catch (err) {
+    res.status(500).send(
+      apiResponse(0, message.INTERNAL_ERROR, {
+        error: err,
+      })
+    );
+  }
+};
+exports.view = async function (req, res) {
+  const roomId = req.params.roomId;
+  try {
+    const Review = await db.Review.findAll({ where: { roomId, hasSpoiler: 0 }, include: [{model: db.User, attributes: ['name']}] });
     res.status(200).send(
       apiResponse(1, message.REVIEW_FETCHED, {
         Review,

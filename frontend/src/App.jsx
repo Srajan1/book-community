@@ -8,6 +8,7 @@ import Layout from "./components/drawer.jsx";
 import Rooms from "./pages/rooms.jsx";
 import { red } from "@mui/material/colors";
 import IndividualRoom from "./pages/individualRoom.jsx";
+import Review from "./pages/review.jsx";
 const color = red;
 const theme = createTheme({
   palette: {
@@ -51,6 +52,9 @@ function App() {
           </Route>
           <Route path="/room/:id">
             <IndividualRoom />
+          </Route>
+          <Route path="/review/:id">
+            <Review />
           </Route>
         </Layout>
       </Router>
