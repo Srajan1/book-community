@@ -10,6 +10,7 @@ import { red } from "@mui/material/colors";
 import IndividualRoom from "./pages/individualRoom.jsx";
 import Review from "./pages/review.jsx";
 import Discussion from "./pages/discussion.jsx";
+import Comment from './pages/comments'
 const color = red;
 const theme = createTheme({
   palette: {
@@ -59,6 +60,9 @@ function App() {
           </Route>
           <Route path="/discussion/:id">
             <Discussion />
+          </Route>
+          <Route path="/comment/:id">
+            <Comment />
           </Route>
         </Layout>
       </Router>

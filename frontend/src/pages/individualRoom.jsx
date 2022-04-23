@@ -114,7 +114,7 @@ export default function IndividualRoom() {
     return (
       <div>
         <Grid container spacing={10}>
-          <Grid item s={12} md={3} lg={3} item>
+          <Grid item s={12} md={3} lg={3}>
             <CardMedia component="img" image={book.thumbnail} />
           </Grid>
           <Grid item s={12} md={9} lg={9}>

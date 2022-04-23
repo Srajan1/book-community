@@ -9,16 +9,40 @@ import {
   Card,
   CardHeader,
   CardContent,
+  CardActions,
 } from "@mui/material";
+import { useHistory } from "react-router-dom";
 const stateData = require("../state.json");
 
+function DiscussionBody({discussion, readMoreId}) {
+  if (readMoreId !== discussion.id)
+    return (
+      <Typography color="textSecondary">{`${discussion.body.substring(
+        0,
+        100
+      )}...`}</Typography>
+    );
+  else
+    return (
+      <Typography color="textSecondary">{`${discussion.body}`}</Typography>
+    );
+}
+
 export default function Discussion() {
+  const history = useHistory();
   var url = window.location.pathname.split("/");
+  const [readMoreId, setReadMoreId] = useState(-1);
   const roomId = url[url.length - 1];
   const [title, setTitle] = useState("");
   const [discussion, setDiscussion] = useState("");
   const [bookName, setBookName] = useState("");
   const [discussionList, setDiscussionList] = useState([]);
+  function readMore(discussionId) {
+    setReadMoreId(discussionId);
+  }
+  function comments(discussionId) {
+    history.push(`/comment/${discussionId}`)
+  }
   useEffect(() => {
     fetch(`${stateData.baseUrl}discussion/room/${roomId}`, {
       headers: {
@@ -122,8 +146,29 @@ export default function Discussion() {
                   subheader={`${discussion.createdAt.substring(0, 10)}`}
                 />
                 <CardContent>
-                  <Typography color="textSecondary">{`${discussion.body}`}</Typography>
+                  <DiscussionBody discussion={discussion} readMoreId={readMoreId}/>
                 </CardContent>
+                <CardActions>
+                  <Button
+                    size="small"
+                    color="primary"
+                    onClick={() => {
+                      readMore(discussion.id);
+                    }}
+                  >
+                    Read more
+                  </Button>
+
+                  <Button
+                    size="small"
+                    color="primary"
+                    onClick={() => {
+                      comments(discussion.id);
+                    }}
+                  >
+                    Comments
+                  </Button>
+                </CardActions>
               </Card>
             </Grid>
           ))}

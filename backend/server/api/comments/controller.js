@@ -32,3 +32,19 @@ exports.create = async function (req, res) {
     );
   }
 };
+
+
+exports.index = async function (req, res) {
+  const { discussionId } = req.params;
+  try {
+    const Discussion = await db.Discussion.findOne({where: {id: discussionId}, include: [db.User]});
+    const Comment = await db.Comment.findAll({where: {discussionId}, include: [db.User]});
+    res.status(200).send(apiResponse(1, message.FETCHED, { Comment, Discussion }));
+  } catch (err) {
+    res.status(500).send(
+      apiResponse(0, message.INTERNAL_ERROR, {
+        error: err,
+      })
+    );
+  }
+};
